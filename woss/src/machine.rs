@@ -12,7 +12,7 @@ use crate::{
 
 pub type Reg = u32;
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, PartialOrd, Ord)]
 pub struct StepCommitment {
     pub step_num: u64,
     pub commitment: Bytes32,
