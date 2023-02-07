@@ -40,6 +40,7 @@ impl Deref for Finder {
 
 fn main() {
     let mut prover = Prover::<u32>::new(RISCV_MAX_MEMORY);
+    // https://github.com/nervosnetwork/ckb-vm/blob/develop/tests/programs/simple
     let buffer = fs::read("./simple").unwrap().into();
     prover.load_program(&buffer).unwrap();
 
