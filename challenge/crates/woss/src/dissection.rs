@@ -1,4 +1,5 @@
 use crate::machine::StepCommitment;
+use crate::vec::Vec;
 
 const MAX_STEP_CHUNKS: usize = 40;
 
@@ -15,16 +16,16 @@ impl StepDiffFinder {
         &'a self,
         step_commitments: &'b [StepCommitment],
     ) -> (&'a StepCommitment, &'a StepCommitment) {
-        let (idx, last_diff_step) = step_commitments
+        let (idx, first_diff_step) = step_commitments
             .iter()
             .enumerate()
             .find(|(_idx, sc)| self.step_commitments.binary_search(sc).is_err())
             .unwrap();
         if step_commitments.len() < MAX_STEP_CHUNKS {
-            return (last_diff_step, last_diff_step);
+            return (first_diff_step, first_diff_step);
         }
 
-        (&step_commitments[idx - 1], last_diff_step)
+        (&step_commitments[idx - 1], first_diff_step)
     }
 
     pub fn step_range(&self, start: usize, end: usize) -> Vec<StepCommitment> {

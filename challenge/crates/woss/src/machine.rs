@@ -3,10 +3,14 @@ use ckb_vm::{
     DefaultMachine, DefaultMachineBuilder, Error, Register, SupportMachine, ISA_IMC,
     RISCV_GENERAL_REGISTER_NUMBER,
 };
+use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "std")]
+use crate::memory::prover::ProverSMT;
+use crate::{vec::Vec, string::ToString};
 use crate::{
     common::{blake2b, blake2b_hasher},
-    memory::{prover::ProverSMT, verifier::VerifierSMT, MemoryProof, SMTMemory, SMTOps},
+    memory::{verifier::VerifierSMT, MemoryProof, SMTMemory, SMTOps},
     types::Bytes32,
 };
 
@@ -23,6 +27,7 @@ pub struct RunResult {
     pub step_commitments: Vec<StepCommitment>,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct StepProof<Reg> {
     pub step_num: u64,
     pub registers: [Reg; RISCV_GENERAL_REGISTER_NUMBER],
@@ -188,6 +193,7 @@ impl<R: Register, M: SMTOps> Machine<R, M> {
     }
 }
 
+#[cfg(feature = "std")]
 impl<R: Register> Machine<R, ProverSMT> {
     pub fn prove_next_step(&mut self) -> Result<StepProof<R>, Error> {
         let mut decoder = build_decoder::<R>(self.inner.isa(), self.inner.version());

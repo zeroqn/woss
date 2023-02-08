@@ -1,0 +1,28 @@
+[package]
+name = "woss"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = ["std"]
+std = ["ckb-vm/std", "sparse-merkle-tree/std", "im", "serde/std", "serde_with/std", "molecule/std" ]
+
+[dependencies]
+blake2b-ref = "0.3.1"
+cfg-if = "1.0"
+ckb-vm = { git = "https://github.com/zeroqn/ckb-vm", branch = "feat-support-no-std", default-features = false }
+im = { version = "15", optional = true }
+molecule = { version = "0.7", default-features = false }
+serde = { version = "1.0", default-features = false, features = [ "derive" ] }
+serde_with = { version = "2.2", default-features = false, features = [ "alloc", "macros" ] }
+sparse-merkle-tree = { git = "https://github.com/zeroqn/sparse-merkle-tree", branch = "feat-c-state-fetch-and-calculate-root", default-features=false, features = [ "trie", "smtc" ] }
+
+[dev-dependencies]
+proptest = "1.0"
+# Deps for example demo
+rand = "0.8"
+serde_json = "1.0"
+
+[[example]]
+name = "demo"

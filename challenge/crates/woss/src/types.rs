@@ -1,7 +1,11 @@
-use std::ops::Deref;
+use crate::ops::Deref;
 
 use serde::{Deserialize, Serialize};
 use sparse_merkle_tree::{traits::Value, H256};
+
+pub mod conversion;
+pub mod generated;
+pub use generated::packed;
 
 #[derive(Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Bytes32([u8; 32]);

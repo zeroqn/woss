@@ -1,1 +1,8 @@
 /target
+
+/challenge/contracts/c/build/*
+/challenge/contracts/**/target/*
+/challenge/build/*
+/challenge/target/*
+/challenge/!.gitkeep
+/challenge/.tmp/

@@ -1,18 +1,9 @@
 use std::{fs, ops::Deref};
 
 use ckb_vm::RISCV_MAX_MEMORY;
-use machine::StepCommitment;
 use rand::Rng;
 
-pub mod common;
-pub mod dissection;
-pub mod machine;
-pub mod memory;
-pub mod prover;
-pub mod types;
-pub mod verifier;
-
-use crate::{dissection::StepDiffFinder, prover::Prover, verifier::Verifier};
+use woss::{machine::StepCommitment, dissection::StepDiffFinder, prover::Prover, verifier::Verifier};
 
 fn forge_steps(mut steps: Vec<StepCommitment>, start_at: u64) -> Vec<StepCommitment> {
     let mut rng = rand::rngs::OsRng::default();
@@ -87,6 +78,8 @@ fn main() {
     assert_eq!(result.step_count, last_same_step.step_num);
 
     let proof = prover.prove_next_step().unwrap();
+    // let json_proof = serde_json::to_vec(&proof).unwrap();
+    // fs::write("./proof.json", json_proof).unwrap();
     let mut verifier = Verifier::<u32>::from_proof(proof).unwrap();
     assert_eq!(last_same_step, verifier.commit_step().unwrap());
 

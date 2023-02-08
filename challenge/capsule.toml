@@ -1,0 +1,14 @@
+version = "0.9.0"
+deployment = "deployment.toml"
+
+[[contracts]]
+name = "step-verifier-lock"
+template_type = "Rust"
+
+[rust]
+# # path of rust contracts workspace directory,
+# # a `Cargo.toml` file is expected under the directory.
+# workspace_dir = "."
+toolchain = "nightly-2023-02-08"
+docker_image = "ghcr.io/zeroqn/capsule:publish-docker-image-rust-toolchain-nightly-2023-02-08"
+# docker_image = "thewawar/ckb-capsule:2022-08-01"

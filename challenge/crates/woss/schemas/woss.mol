@@ -1,0 +1,43 @@
+array Uint32 [byte; 4];
+array Uint64 [byte; 8];
+array Bytes32 [byte; 32];
+vector Bytes <byte>;
+
+struct KVPair { k: Bytes32, v: Bytes32, }
+vector KVPairVec <KVPair>;
+
+array Registers32 [Uint32; 32];
+array Registers64 [Uint64; 32];
+
+table MemoryProof {
+    memory_size: Uint64,
+    root: Bytes32,
+    kvs: KVPairVec,
+    merkle_proof: Bytes,
+}
+
+table StepProof32 {
+    step_num: Uint64,
+    registers: Registers32,
+    pc: Uint32,
+    next_pc: Uint32,
+    memory: MemoryProof,
+    cycles: Uint64,
+    max_cycles: Uint64,
+    running: byte,
+    isa: byte,
+    version: Uint32,
+}
+
+table StepProof64 {
+    step_num: Uint64,
+    registers: Registers64,
+    pc: Uint64,
+    next_pc: Uint64,
+    memory: MemoryProof,
+    cycles: Uint64,
+    max_cycles: Uint64,
+    running: byte,
+    isa: byte,
+    version: Uint32,
+}

@@ -1,16 +1,15 @@
-use core::marker::PhantomData;
-
-extern crate alloc;
-use alloc::collections::BTreeMap;
+use crate::{collections::BTreeMap, marker::PhantomData, string::ToString, vec::Vec};
 
 use ckb_vm::{
     memory::{fill_page_data, get_page_indices, set_dirty},
     Error, Memory, Register, RISCV_PAGESIZE,
 };
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{common::blake2b, types::Bytes32};
 
+#[cfg(feature = "std")]
 pub mod prover;
 pub mod verifier;
 
@@ -34,10 +33,12 @@ pub struct MemoryCommitment {
     pub root: Bytes32,
 }
 
+#[serde_as]
 #[derive(Serialize, Deserialize)]
 pub struct MemoryProof {
     pub memory_size: usize,
     pub root: Bytes32,
+    #[serde_as(as = "Vec<(_, _)>")]
     pub kvs: BTreeMap<Bytes32, Bytes32>,
     pub merkle_proof: Vec<u8>,
 }
@@ -102,7 +103,7 @@ impl<R: Register, S: SMTOps> SMTMemory<R, S> {
             let chunk_offset = addr.rem_euclid(Self::DATA_CHUNK_SIZE) as usize;
             let chunk_available_size = Self::DATA_CHUNK_SIZE as usize - chunk_offset;
 
-            let read_size = std::cmp::min(chunk_available_size, remain);
+            let read_size = crate::cmp::min(chunk_available_size, remain);
             let start = buf_filled;
             let end = buf_filled + read_size;
 
@@ -129,7 +130,7 @@ impl<R: Register, S: SMTOps> SMTMemory<R, S> {
             let chunk_offset = addr.rem_euclid(Self::DATA_CHUNK_SIZE) as usize;
             let chunk_available_size = Self::DATA_CHUNK_SIZE as usize - chunk_offset;
 
-            let write_size = std::cmp::min(remain, chunk_available_size);
+            let write_size = crate::cmp::min(remain, chunk_available_size);
             let start = value_wrote;
             let end = value_wrote + write_size;
 
