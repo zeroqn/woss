@@ -27,7 +27,7 @@ pub struct RunResult {
     pub step_commitments: Vec<StepCommitment>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct StepProof<Reg> {
     pub step_num: u64,
     pub registers: [Reg; RISCV_GENERAL_REGISTER_NUMBER],

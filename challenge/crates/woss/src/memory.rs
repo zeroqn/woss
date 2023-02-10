@@ -34,7 +34,7 @@ pub struct MemoryCommitment {
 }
 
 #[serde_as]
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct MemoryProof {
     pub memory_size: usize,
     pub root: Bytes32,

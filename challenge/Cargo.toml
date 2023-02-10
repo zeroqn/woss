@@ -1,6 +1,5 @@
 [workspace]
 members = [
-    "tests",
     "contracts/step-verifier-lock",
 ]
 

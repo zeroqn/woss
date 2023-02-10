@@ -29,11 +29,10 @@ impl_conversion_for_step_proof!(StepProof<u64>, StepProof64, StepProof64Reader);
 
 impl Pack<packed::MemoryProof> for MemoryProof {
     fn pack(&self) -> packed::MemoryProof {
-        let kvs: Vec<_> = self.kvs.clone().into_iter().map(|(k, v)| (k, v)).collect();
         packed::MemoryProof::new_builder()
             .memory_size((self.memory_size as u64).pack())
             .root(self.root.pack())
-            .kvs(kvs.pack())
+            .kvs(self.kvs.iter().map(|(k, v)| (*k, *v).pack()).pack())
             .merkle_proof(self.merkle_proof.pack())
             .build()
     }
