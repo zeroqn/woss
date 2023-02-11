@@ -76,7 +76,7 @@ pub fn main() -> Result<(), Error> {
         .map_err(|_| Error::ExecuteNextStep)?;
 
     let next_commitment = verifier.commit_step().map_err(|_| Error::VerifierCommit)?;
-    if next_commitment != expected_steps.0 {
+    if next_commitment != expected_steps.1 {
         debug!("verifier next commitment {:?}", next_commitment.commitment);
         return Err(Error::MismatchNextStepCommitment);
     }
