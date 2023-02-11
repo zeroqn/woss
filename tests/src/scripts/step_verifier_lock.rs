@@ -100,6 +100,7 @@ fn test_step_verifier_lock() {
         // Enable vm version1
         let lock = Script::new_builder()
             .code_hash(STEP_VERIFIER_LOCK_CODE_HASH.pack())
+            .hash_type(ScriptHashType::Data1.into())
             .args(args)
             .build();
 
