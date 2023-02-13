@@ -72,9 +72,10 @@ macro_rules! impl_conversion_for_registers_unpack {
             fn unpack(&self) -> [$reg; RISCV_GENERAL_REGISTER_NUMBER] {
                 let mut registers: [$reg; RISCV_GENERAL_REGISTER_NUMBER] = Default::default();
 
+                let reg_bytes_len = <$reg>::MIN.to_le_bytes().len();
                 for idx in 0..RISCV_GENERAL_REGISTER_NUMBER {
-                    let start = idx * 4;
-                    let end = idx * 4 + 4;
+                    let start = idx * reg_bytes_len;
+                    let end = start + reg_bytes_len;
                     registers[idx] =
                         packed::$regreader::new_unchecked(&self.as_slice()[start..end]).unpack();
                 }
