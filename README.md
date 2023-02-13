@@ -1,3 +1,9 @@
+### How to run example demo?
+
+```sh
+cargo run --example demo
+```
+
 ### How to run contract tests?
 
 Build contracts:
