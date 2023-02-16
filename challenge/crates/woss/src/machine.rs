@@ -7,12 +7,12 @@ use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "std")]
 use crate::memory::prover::ProverSMT;
-use crate::{vec::Vec, string::ToString};
 use crate::{
     common::{blake2b, blake2b_hasher},
     memory::{verifier::VerifierSMT, MemoryProof, SMTMemory, SMTOps},
     types::Bytes32,
 };
+use crate::{string::ToString, vec::Vec};
 
 pub type Reg = u32;
 
@@ -126,6 +126,7 @@ impl<R: Register, M: SMTOps> Machine<R, M> {
         hasher.update(&self.commit_registers());
         hasher.update(&blake2b([
             b"PC",
+            R::BITS.to_le_bytes().as_slice(),
             self.inner.pc().to_u64().to_le_bytes().as_slice(),
         ]));
         hasher.update(&self.commit_next_pc());
@@ -158,7 +159,12 @@ impl<R: Register, M: SMTOps> Machine<R, M> {
 
     fn commit_next_pc(&mut self) -> Bytes32 {
         let next_pc = self.get_next_pc();
-        blake2b([b"Next_PC", next_pc.to_u64().to_le_bytes().as_slice()]).into()
+        blake2b([
+            b"Next_PC",
+            R::BITS.to_le_bytes().as_slice(),
+            next_pc.to_u64().to_le_bytes().as_slice(),
+        ])
+        .into()
     }
 
     fn commit_memory(&self) -> Result<Bytes32, Error> {
@@ -184,6 +190,7 @@ impl<R: Register, M: SMTOps> Machine<R, M> {
             .enumerate()
             .for_each(|(idx, r)| {
                 hasher.update(&idx.to_le_bytes());
+                hasher.update(&R::BITS.to_le_bytes());
                 hasher.update(&r.to_u64().to_le_bytes());
             });
 

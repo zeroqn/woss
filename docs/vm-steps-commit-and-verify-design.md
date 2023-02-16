@@ -33,9 +33,9 @@ We hash all the elements list in the above two parts to get a single hash, that'
 let mut hasher = blake2b_hasher();
 
 hasher.update("Machine");
-hasher.update("Registers" | vm.registers);
-hasher.update("PC" | vm.pc);
-hasher.update("Next_PC" | vm.next_pc);
+hasher.update("Registers" | vm.registers); // NOTE: Must include every register BITS length
+hasher.update("PC" | PC::BITS.length | vm.pc);
+hasher.update("Next_PC" | PC::BITS.length | vm.next_pc);
 hasher.update("Memory" | vm.memory.commit);
 hasher.update("Cycles" | vm.cycles);
 hasher.update("Max_Cycles" | vm.max_cycles);
