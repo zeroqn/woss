@@ -27,7 +27,7 @@ pub struct DefaultCoreMachine<R, M> {
 
 ## How to commit?
 
-We hash all the elements list in the above two parts to get a single hash, that's the vm commitment.
+We hash all the elements listed in the above two parts to get a single hash, that's the vm commitment.
 
 ```pseudocode
 let mut hasher = blake2b_hasher();
@@ -86,3 +86,7 @@ Again, thanks to well designed ckb-vm code. We ported it to `no_std` environment
 Detail code [here](https://github.com/zeroqn/woss/blob/rice-pudding/challenge/crates/woss/src/machine.rs#L99)
 
 Execution code in contract [here](https://github.com/zeroqn/woss/blob/rice-pudding/challenge/contracts/step-verifier-lock/src/entry.rs#L75)
+
+## Further optimizations
+
+1. Could use 64bit smt to commit memory instead
